@@ -10,16 +10,6 @@
 
 ---
 
-### 🔗 **Live Demo & Screenshots**
-
-**Play the game live:** **[your-live-demo-url.com](https://your-live-demo-url.com)**
-
-*(Include a high-quality GIF or screenshot of your application here. A GIF of gameplay is highly recommended.)*
-
-![Gameplay GIF](https://raw.githubusercontent.com/your-username/your-repo-name/main/docs/gameplay.gif)
-
----
-
 ## 🚀 Key Features
 
 - **Real-Time Multiplayer:** Challenge opponents and play in real-time using a **Django Channels** (WebSocket) backend.
@@ -145,9 +135,3 @@ This section highlights key technical challenges encountered during development 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
-
-## 📧 Contact
-
-Your Name – your.email@example.com
-
-Project Link: https://github.com/your-username/your-repo-name
