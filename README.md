@@ -1,38 +1,40 @@
-# Checkmate Arena: A Modern Full-Stack 3D Chess Application
+# TI Chess: A Full-Stack Strategic 3D Board Game
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-username/your-repo-name)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge)](https://github.com/your-username/your-repo-name)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18-blue?logo=react&style=for-the-badge)](https://reactjs.org/)
+[![Django](https://img.shields.io/badge/Django-5.0-darkgreen?logo=django&style=for-the-badge)](https://www.djangoproject.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker&style=for-the-badge)](https://www.docker.com/)
 
-A real-time, browser-based 3D chess game featuring robust move validation, multiplayer support via WebSockets, and a sleek, responsive UI.
+**TI Chess** is a production-ready, full-stack web application that implements a strategic, chess-like game modeling technology market evolution. It features real-time multiplayer, a 3D interface, and a robust, scalable backend architecture.
 
 ---
 
 ### 🔗 **Live Demo & Screenshots**
 
-**Play the game live:** **[checkmate-arena.your-domain.com](https://your-username.github.io/your-repo-name/)**
+**Play the game live:** **[your-live-demo-url.com](https://your-live-demo-url.com)**
 
 *(Include a high-quality GIF or screenshot of your application here. A GIF of gameplay is highly recommended.)*
 
-![Gameplay GIF](https://path-to-your-gameplay.gif)
+![Gameplay GIF](https://raw.githubusercontent.com/your-username/your-repo-name/main/docs/gameplay.gif)
 
 ---
 
 ## 🚀 Key Features
 
-- **Real-Time Multiplayer:** Challenge opponents and play in real-time using a Socket.IO-powered backend.
-- **Immersive 3D Board:** A beautifully rendered 3D chessboard and pieces built with **Three.js**.
-- **Complete Move Validation:** All moves are validated on the server-side using the `chess.js` library, ensuring adherence to all chess rules, including castling, en passant, and promotion.
-- **Game State Management:** Comprehensive tracking of game status, including check, checkmate, stalemate, and draws.
-- **Interactive UI:** A fluid and intuitive user interface built with **React** and **Material-UI (MUI)**, allowing for easy piece selection and movement.
-- **Responsive Design:** Fully playable on both desktop and mobile devices.
+- **Real-Time Multiplayer:** Challenge opponents and play in real-time using a **Django Channels** (WebSocket) backend.
+- **Immersive 3D Board:** A beautifully rendered 3D board and pieces built with **React Three Fiber**.
+- **Unique Game Logic:** Implements the full "Technology Investment" chess rule set, including a 4-level piece evolution system (Talent → Leader → Strategist → Investor).
+- **Server-Authoritative Architecture:** All game logic and move validation are handled on the server to prevent cheating and ensure state consistency.
+- **Modern Frontend:** A fluid and intuitive UI built with **React**, **TypeScript**, and **Material-UI (MUI)**.
+- **Full DevOps Lifecycle:** Containerized with **Docker**, with a full CI/CD pipeline via **GitHub Actions** for automated testing and deployment.
+- **RESTful API:** A comprehensive API built with **Django REST Framework** for managing games, players, and game state.
 
 ---
 
 ## 🏛️ Technical Architecture
 
-This project is a full-stack application with a decoupled frontend and backend, communicating via a WebSocket API for real-time events and a RESTful API for game setup.
+This project utilizes a robust, decoupled architecture with a Django backend serving a RESTful API and managing real-time WebSocket connections, and a separate React single-page application for the user interface.
 
 ```
   +------------------+      +------------------+
