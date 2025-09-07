@@ -1,0 +1,21 @@
+# Minimal requirements for basic functionality
+# Use this for initial setup if you encounter dependency issues
+
+Django>=4.2,<5.0
+djangorestframework>=3.14,<4.0
+django-cors-headers>=4.0,<5.0
+channels>=4.0,<5.0
+channels-redis>=4.0,<5.0
+daphne>=4.0,<5.0
+redis>=5.0,<6.0
+python-decouple>=3.8
+dj-database-url>=2.0
+whitenoise>=6.0
+
+# Optional: Only install if needed
+# psycopg2-binary>=2.9  # For PostgreSQL
+# Pillow>=10.0          # For image handling
+# sentry-sdk>=1.30      # For error tracking
+
+# Development tools
+drf-spectacular>=0.26
