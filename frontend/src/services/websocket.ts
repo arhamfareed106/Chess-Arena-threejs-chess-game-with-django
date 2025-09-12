@@ -15,8 +15,12 @@ class WebSocketService {
       this.gameId = gameId;
       this.playerToken = playerToken || null;
 
-      const wsBaseUrl = import.meta.env.VITE_WS_BASE_URL || 'ws://localhost:8001';
+      // Fix WebSocket URL to use current host instead of hardcoded port
+      const currentHost = window.location.host;
+      const wsBaseUrl = import.meta.env.VITE_WS_BASE_URL || `ws://${currentHost}`;
       const wsUrl = `${wsBaseUrl}/ws/game/${gameId}/`;
+      
+      console.log('🔧 WebSocket connecting to:', wsUrl);
 
       this.socket = io(wsUrl, {
         transports: ['websocket'],

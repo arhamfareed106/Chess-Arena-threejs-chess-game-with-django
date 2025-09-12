@@ -6,6 +6,8 @@ Django REST Framework views for TI Chess API
 import logging
 from django.utils import timezone  # type: ignore
 from django.shortcuts import get_object_or_404, render  # type: ignore
+from django.views.decorators.cache import cache_page  # type: ignore
+from django.utils.decorators import method_decorator  # type: ignore
 from rest_framework import status, viewsets, permissions  # type: ignore
 from rest_framework.decorators import action, api_view  # type: ignore
 from rest_framework.response import Response  # type: ignore
@@ -79,7 +81,7 @@ class GameViewSet(viewsets.ModelViewSet):
         """List active/joinable games"""
         queryset = Game.objects.filter(
             status__in=[Game.Status.WAITING, Game.Status.ACTIVE]
-        ).order_by('-created_at')
+        ).select_related().prefetch_related('players').order_by('-created_at')[:20]  # Limit to 20 games
         
         # Filter public games or games user is part of
         if not request.user.is_authenticated:
@@ -412,14 +414,21 @@ class ActiveGamesView(APIView):
         responses={200: GameSerializer(many=True)}
     )
     def get(self, request):
-        """Get active/joinable games"""
-        games = Game.objects.filter(
-            status__in=[Game.Status.WAITING, Game.Status.ACTIVE],
-            is_public=True
-        ).order_by('-created_at')
-        
-        serializer = GameSerializer(games, many=True)
-        return Response(serializer.data)
+        """Get active/joinable games with performance optimizations"""
+        try:
+            games = Game.objects.filter(
+                status__in=[Game.Status.WAITING, Game.Status.ACTIVE],
+                is_public=True
+            ).select_related().prefetch_related('players').order_by('-created_at')[:20]  # Fixed order
+            
+            serializer = GameSerializer(games, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            logger.error(f"Error fetching active games: {e}")
+            return Response(
+                {'error': 'Unable to fetch games'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class PlayerViewSet(viewsets.ReadOnlyModelViewSet):

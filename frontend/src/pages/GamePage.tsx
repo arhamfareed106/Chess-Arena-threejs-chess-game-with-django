@@ -89,15 +89,23 @@ const GamePage: React.FC = () => {
           wsService.sendMessage('reconnect', { player_token: playerToken });
         }
 
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to connect to game:', error);
-        // Don't show error for WebSocket connection issues in development
-        if (process.env.NODE_ENV !== 'development') {
-          toast.error('Failed to connect to game');
-          navigate('/');
+        
+        // Better error handling for WebSocket connections
+        if (error.message.includes('timeout')) {
+          toast.error('Connection timeout. The server may be busy. Please try again.');
+        } else if (error.message.includes('connect')) {
+          toast.error('Unable to establish real-time connection. Some features may not work.');
         } else {
-          console.log('WebSocket connection failed in development mode - this is expected if backend is not running');
-          setConnected(false);
+          // Don't show error for WebSocket connection issues in development
+          if (process.env.NODE_ENV !== 'development') {
+            toast.error('Failed to connect to game');
+            setTimeout(() => navigate('/'), 3000);
+          } else {
+            console.log('WebSocket connection failed in development mode - this is expected if backend is not running');
+            setConnected(false);
+          }
         }
       }
     };
@@ -127,33 +135,41 @@ const GamePage: React.FC = () => {
         const safeMoves = Array.isArray(movesData) ? movesData : [];
         setMoves(safeMoves);
         setCurrentPlayer(boardState.currentTurnPlayer);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to load game data:', error);
-        // In development, allow frontend to run without backend
-        if (process.env.NODE_ENV === 'development') {
-          console.log('Backend not available in development - using mock data');
-          setGame({
-            id: gameId,
-            name: 'Mock Game',
-            status: GameStatus.WAITING,
-            players: [],
-            turnCount: 0,
-            isPublic: false,
-            noProgressTurns: 0,
-            currentTurnPlayerName: null,
-            winnerName: null,
-            movesCount: 0,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            startedAt: null,
-            finishedAt: null,
-          });
-          setPieces([]);
-          setMoves([]);
-          setCurrentPlayer(null);
+        
+        // Better error handling with user-friendly messages
+        if (error.code === 'ECONNABORTED') {
+          toast.error('Server is taking longer than expected. Please wait and try again.');
+        } else if (error.code === 'ERR_NETWORK') {
+          toast.error('Unable to connect to server. Please check your connection.');
         } else {
-          toast.error('Failed to load game');
-          navigate('/');
+          // In development, allow frontend to run without backend
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Backend not available in development - using mock data');
+            setGame({
+              id: gameId,
+              name: 'Mock Game',
+              status: GameStatus.WAITING,
+              players: [],
+              turnCount: 0,
+              isPublic: false,
+              noProgressTurns: 0,
+              currentTurnPlayerName: null,
+              winnerName: null,
+              movesCount: 0,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              startedAt: null,
+              finishedAt: null,
+            });
+            setPieces([]);
+            setMoves([]);
+            setCurrentPlayer(null);
+          } else {
+            toast.error('Failed to load game. Returning to lobby.');
+            setTimeout(() => navigate('/'), 3000);
+          }
         }
       } finally {
         setLoading(false);
@@ -620,6 +636,13 @@ const GamePage: React.FC = () => {
               </Button>
             </Box>
           </Box>
+        </Box>
+      </Drawer>
+    </Box>
+  );
+};
+
+export default GamePage;          </Box>
         </Box>
       </Drawer>
     </Box>
